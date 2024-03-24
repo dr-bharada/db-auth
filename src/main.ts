@@ -6,7 +6,7 @@ import { GlobalExceptionFilter } from './common/global-exception/global-exceptio
 import { swaggerConfig } from './common/config/swagger.config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalFilters(new GlobalExceptionFilter());
+  // app.useGlobalFilters(new GlobalExceptionFilter());
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('Auth', app, document);
   mongoose.set(

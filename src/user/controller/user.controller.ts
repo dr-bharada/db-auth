@@ -3,13 +3,14 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UserSerice } from '../service/user.service';
 import { AuthGuard } from 'src/common/guard/auth.guard';
 import { ApiSecurity } from '@nestjs/swagger';
+import { RequestValidatePipe } from 'src/common/pipes/request-validate.pipe';
 @Controller('auth')
 @UseGuards(AuthGuard)
 @ApiSecurity("Token")
 export class AuthController {
   constructor(private userService: UserSerice) { }
   @Post('register')
-  @UsePipes(new ValidationPipe())
+  @UsePipes(new RequestValidatePipe())
   register(@Body() createUserDto: CreateUserDto) {
     return this.userService.registerUser(createUserDto);
   }
