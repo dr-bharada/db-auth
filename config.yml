@@ -1,1 +1,7 @@
 
+mongodb:
+  uri: "mongodb+srv://testUser:II326v46vW7mulyx@cluster0.cyvyuf0.mongodb.net/demo_auth?retryWrites=true&w=majority"
+
+mysql:
+  dabase: "blog"
+
