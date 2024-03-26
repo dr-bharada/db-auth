@@ -1,37 +1,30 @@
-import { Body, Controller, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { LoginDto, NewUserDto, PasswordDto } from '../dto/auth-user.dto';
 import { UserSerice } from '../service/user.service';
-import { AuthGuard } from 'src/common/guard/auth.guard';
-import { ApiSecurity } from '@nestjs/swagger';
-import { RequestValidatePipe } from 'src/common/pipes/request-validate.pipe';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 @Controller('auth')
-@UseGuards(AuthGuard)
+@ApiTags("auth-controller")
 @ApiSecurity("Token")
 export class AuthController {
   constructor(private userService: UserSerice) { }
   @Post('register')
-  @UsePipes(new RequestValidatePipe())
-  register(@Body() createUserDto: CreateUserDto) {
+  @UsePipes(new ValidationPipe())
+  register(@Body() createUserDto: NewUserDto) {
     return this.userService.registerUser(createUserDto);
   }
+
   @Post('login')
-  @UsePipes(new ValidationPipe())
-  login(@Body() createUserDto: CreateUserDto) {
-    return this.userService.registerUser(createUserDto);
+  login(@Body() loginDto: LoginDto) {
+    return this.userService.login(loginDto)
   }
-  @Post('sendOTP')
-  @UsePipes(new ValidationPipe())
-  sendOTP(@Body() createUserDto: CreateUserDto) {
-    return this.userService.registerUser(createUserDto);
+
+  @Post('newPassword')
+  newPassword(@Body() userPassword: PasswordDto) {
+    return this.userService.setPassword(userPassword)
   }
-  @Post('sendOTP2')
-  @UsePipes(new ValidationPipe())
-  sendOTP2(@Body() createUserDto: CreateUserDto) {
-    return this.userService.registerUser(createUserDto);
-  }
-  @Post('deleteUser')
-  @UsePipes(new ValidationPipe())
-  deleteUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.registerUser(createUserDto);
+
+  @Post('getAllUser')
+  getAllUser() {
+    return this.userService.getAllUser()
   }
 }

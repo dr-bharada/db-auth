@@ -9,10 +9,10 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateUserDto {
-  // @ApiProperty({ description: 'The title of the user.' })
-  // @IsNotEmpty({ message: 'Title is required' })
-  // title: string;
+export class NewUserDto {
+  @ApiProperty({ description: 'The title of the user.' })
+  @IsNotEmpty({ message: 'Title is required' })
+  title: string;
 
   @ApiProperty({ description: 'The first name of the user.', maxLength: 50 })
   @IsNotEmpty({ message: 'First name is required' })
@@ -52,4 +52,24 @@ export class CreateUserDto {
   @IsOptional()
   @IsString({ message: 'Invalid image URL format' })
   imageUrl?: string;
+}
+export class LoginDto {
+  @ApiProperty()
+  @IsNotEmpty({ message: 'Email is required' })
+  @IsEmail({}, { message: 'Invalid email format' })
+  email: string;
+
+  @ApiProperty()
+  @IsNotEmpty({ message: 'Password is required' })
+  password :string;
+
+}
+export class PasswordDto{
+  @ApiProperty()
+  @IsNotEmpty({ message: 'UserID is required' })
+  userId :string;
+
+  @ApiProperty()
+  @IsNotEmpty({ message: 'Password is required' })
+  password :string;
 }

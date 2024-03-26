@@ -1,18 +1,17 @@
-import { Injectable, OnApplicationBootstrap, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { RestApi, RestApiDto } from '../models/restApi';
 import { Model } from 'mongoose';
 import { ModulesContainer } from '@nestjs/core';
 
 @Injectable()
-export class RestApiRervice implements OnModuleInit, OnApplicationBootstrap {
+export class RestApiService implements OnModuleInit {
   apiList: RestApiDto[] = [];
+  apiListData: RestApi[] = [];
   constructor(
     @InjectModel(RestApi.name) private readonly restModel: Model<RestApi>,
-    private readonly modulesContainer: ModulesContainer) { }
-
-  onApplicationBootstrap() {
-    this.storeRestApi(this.apiList)
+    private readonly modulesContainer: ModulesContainer) {
+   
   }
   onModuleInit() {
     const controllers = this.getAllControllers();
@@ -26,14 +25,17 @@ export class RestApiRervice implements OnModuleInit, OnApplicationBootstrap {
         }
       });
     });
+    this.storeRestApi(this.apiList)
   }
   async getAllRestApiList(): Promise<RestApi[]> {
-    return this.restModel.find().exec();
+    return await this.restModel.find().exec();
   }
   async storeRestApi(apiList: RestApiDto[]) {
-    const allApiList: RestApi[] = await this.getAllRestApiList();
+    console.log("before fetch");
+    this.apiListData = await this.getAllRestApiList();
+    console.log("after fetch");
     const newApiList = apiList.filter((apiItem) => {
-      return !allApiList.some((existingApi) => {
+      return !this.apiListData.some((existingApi) => {
         return (
           existingApi.apiName === apiItem.apiName &&
           existingApi.apiType === apiItem.apiType

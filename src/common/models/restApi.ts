@@ -21,3 +21,9 @@ export class RestApiDto {
   roles?: string[];
   softDelete?: boolean;
 }
+
+export interface RestApiValidate {
+  apiName : string
+  roles?: string[];
+}
+
